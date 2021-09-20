@@ -41,7 +41,7 @@ class AuthController extends Controller
         $code = rand(100000,999999);
         $verify = ['token' => $token, 'code' => $code];
         $minutes = 6; // Thoi gian het han
-        Cache::add($user->email, $verify, Carbon::now()->addMinutes($minutes)); //Luu token vao cache neu chua ton tai
+        Cache::put($user->email, $verify, Carbon::now()->addMinutes($minutes));
         $data = ['name' => $user->name, 'code' => $code, 'minutes'=> $minutes];
         $this->sendEmail( $data, $user->email);
         return response(['messae' => 'Done'], 200);

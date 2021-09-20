@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Models\RoleMenu;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class MenuResource extends JsonResource
 {
@@ -14,6 +16,9 @@ class MenuResource extends JsonResource
      */
     public function toArray($request)
     {
+        $user = Auth::user();
+        $menuIds = RoleMenu::where('role_id', $user->role_id)->pluck('menu_id')->toArray();
+        $children = collect($this->children)->whereIn('id', $menuIds)->toArray();
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -21,7 +26,7 @@ class MenuResource extends JsonResource
             'icon' => $this->icon,
             'hidden' => $this->hidden,
             'order' => $this->order,
-            'children' => $this->children
+            'children' => $children,
         ];
     }
 }

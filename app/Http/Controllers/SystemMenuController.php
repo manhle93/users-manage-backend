@@ -19,7 +19,8 @@ class SystemMenuController extends Controller
             return response(['message' => 'Vui lòng đăng nhập'], 403);
         }
         $menuIds = RoleMenu::where('role_id', $user->role_id)->pluck('menu_id')->toArray();
-        $data = SystemMenu::whereIn('id', $menuIds)->with('children:id,name,parent_id,icon,hidden,order')->orderBy('order', 'ASC')->get();
+        $query = SystemMenu::whereIn('id', $menuIds)->with('children:id,name,parent_id,icon,hidden,order');
+        $data =  $query->orderBy('order', 'ASC')->get();
         return MenuResource::collection($data);
     }
 
