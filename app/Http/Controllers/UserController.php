@@ -67,9 +67,9 @@ class UserController extends Controller
         }
 
         if ($status != null) {
-            $query->where('active', $role_id);
+            $query->where('active', $status);
         }
-
+        
         $data = $query->orderBy('updated_at', 'DESC')->paginate($per_pager, ['*'], 'page', $page);
         return $data;
     }
