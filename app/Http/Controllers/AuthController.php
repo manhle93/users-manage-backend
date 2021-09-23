@@ -31,6 +31,9 @@ class AuthController extends Controller
         if ($user->role_id === 4) {
             return response(['message' => 'Bạn không có quyền đăng nhập'], 403);
         }
+        if (!$user->active) {
+            return response(['message' => 'Tài khoản của bạn đã bị đóng'], 403);
+        }
         $credentials = [
             'email' => $user->email,
             'password' => $data['password']
