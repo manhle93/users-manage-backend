@@ -56,6 +56,7 @@ class UserController extends Controller
         $per_pager = $request->get('perPage', 10);
         $search = $request->get('search', null);
         $role_id = $request->get('role_id', null);
+        $status = $request->get('trang_thai', null);
         $query = User::with('role');
         if ($search != null) {
             $search = trim($search);
@@ -64,6 +65,11 @@ class UserController extends Controller
         if ($role_id != null) {
             $query->where('role_id', $role_id);
         }
+
+        if ($status != null) {
+            $query->where('active', $role_id);
+        }
+
         $data = $query->orderBy('updated_at', 'DESC')->paginate($per_pager, ['*'], 'page', $page);
         return $data;
     }
