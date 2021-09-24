@@ -92,6 +92,7 @@ class AuthController extends Controller
                 ]
             ], 400);
         }
+        
         $user =  User::where('email', $data['email_username'])->orWhere('user_name', $data['email_username'])->first();
         if(!$user){
             return response(['message' => 'Người dùng không tồn tại'], 404);
@@ -100,13 +101,21 @@ class AuthController extends Controller
         if(!$verify){
             return response(['message' => 'Đã hết thời gian xác minh!'], 422);
         }
+        
         if($verify['code'] == $data['code']){
+            
             $tokensSaved = [];
             if ($user->tokens != null) {
-                $tokensSaved = json_decode($user->tokens);
+                $tokensSaved = $user->tokens;
             }
-            $tokensSaved[] =$verify['token'];
-            $user->update(['tokens' => json_encode($tokensSaved)]);
+
+            // if ($user->tokens != null) {
+            //     $tokensSaved = json_decode($user->tokens);
+            // }
+            // $tokensSaved[] =$verify['token'];
+            // $user->update(['tokens' => json_encode($tokensSaved)]);
+            
+            $user->update(['tokens' => $tokensSaved]);
             return $this->respondWithToken($verify['token']);
         }else {
             return response(['message' => 'Mã xác thực không đúng'], 401);

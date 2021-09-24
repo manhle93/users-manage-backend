@@ -22,12 +22,12 @@ class UserController extends Controller
             'password' => 'required|min:8|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
             'role_id' => 'required',
         ], [
-            'password.regex' => 'Mật khẩu không đủ mạnh',
-            'password.min' => 'Mật khẩu tối thiểu 8 ký tự',
-            'name.required' => 'Tên không thể bỏ trống',
-            'email.required' => 'Email không thể bỏ trống',
-            'role_id.required' => 'Quyền không thể bỏ trống',
-            'user_name.required' => 'Tên đăng nhập không thể bỏ trống',
+            'password.regex' => 'Password is not strong enough',
+            'password.min' => 'Password minimum 8 characters',
+            'name.required' => 'Name cannot be left blank',
+            'email.required' => 'Email cannot be left blank',
+            'role_id.required' => 'Role cannot be left blank',
+            'user_name.required' => 'User name cannot be left blank',
         ]);
         if ($validator->fails()) {
             $loi = "";
@@ -45,20 +45,20 @@ class UserController extends Controller
         $checkEmail = User::where('email', $data['email'])->first();
         $checkUserName = User::where('user_name', $data['user_name'])->first();
         if ($checkEmail) {
-            return response(['message' => 'Email đã tồn tại !'], 401);
+            return response(['message' => 'Email already exist!'], 401);
         }
         if ($checkUserName) {
-            return response(['message' => 'Tên đăng nhập (User name) đã tồn tại !'], 401);
+            return response(['message' => 'User name already exist!'], 401);
         }
         if ($data['password'] !==  $confirmPassword) {
-            return response(['message' => 'Mật khẩu 2 lần nhập không trùng khớp'], 402);
+            return response(['message' => 'Password two times entered does not match'], 402);
         }
         $data['password'] = Hash::make($data['password']);
         try {
             User::create($data);
             return response(['message' => 'Success'], 200);
         } catch (Exception $e) {
-            return response(['message' => 'Không thể tạo người dùng'], 500);
+            return response(['message' => 'Can not to create user'], 500);
         }
     }
 
@@ -99,7 +99,7 @@ class UserController extends Controller
         ]);
         if ($validator->fails()) {
             return response()->json([
-                'message' => __('Dữ liệu không hợp lệ'),
+                'message' => __('Invalid data'),
                 'data' => [
                     $validator->errors()->all()
                 ]
