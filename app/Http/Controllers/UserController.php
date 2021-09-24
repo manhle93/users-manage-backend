@@ -19,15 +19,27 @@ class UserController extends Controller
             'name' => 'required',
             'user_name' => 'required',
             'email' => 'required',
-            'password' => 'required',
+            'password' => 'required|min:8|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
             'role_id' => 'required',
+        ], [
+            'password.regex' => 'Mật khẩu không đủ mạnh',
+            'password.min' => 'Mật khẩu tối thiểu 8 ký tự',
+            'name.required' => 'Tên không thể bỏ trống',
+            'email.required' => 'Email không thể bỏ trống',
+            'role_id.required' => 'Quyền không thể bỏ trống',
+            'user_name.required' => 'Tên đăng nhập không thể bỏ trống',
         ]);
         if ($validator->fails()) {
+            $loi = "";
+            foreach ($validator->errors()->all() as $it) {
+                $loi = $loi . '' . $it . ", ";
+            };
             return response()->json([
-                'message' => __('Dữ liệu không hợp lệ'),
+                'code' => 400,
+                'message' => $loi,
                 'data' => [
-                    $validator->errors()->all()
-                ]
+                    $validator->errors()->all(),
+                ],
             ], 400);
         }
         $checkEmail = User::where('email', $data['email'])->first();
@@ -69,7 +81,7 @@ class UserController extends Controller
         if ($status != null) {
             $query->where('active', $status);
         }
-        
+
         $data = $query->orderBy('updated_at', 'DESC')->paginate($per_pager, ['*'], 'page', $page);
         return $data;
     }
@@ -113,7 +125,8 @@ class UserController extends Controller
             return response(['message' => 'Không thể cập nhật người dùng']);
         }
     }
-    public function updateMyUser(Request $request){
+    public function updateMyUser(Request $request)
+    {
         $data = $request->only('email', 'name', 'user_name', 'company_name');
         $validator = Validator::make($data, [
             'name' => 'required',
@@ -187,7 +200,7 @@ class UserController extends Controller
                     if ($validator->fails()) {
                         return response()->json(['message' => 'File không hợp lệ!'], 400);
                     }
-                    $name = rand(100000,9999999) . time() . '.' . $image->getClientOriginalExtension();
+                    $name = rand(100000, 9999999) . time() . '.' . $image->getClientOriginalExtension();
                     $image->storeAs('public/images/avatar/', $name);
 
                     $user = User::find(Auth::user()->id);
@@ -224,7 +237,7 @@ class UserController extends Controller
                     if ($validator->fails()) {
                         return response()->json(['message' => 'File không hợp lệ!'], 400);
                     }
-                    $name = rand(100000,9999999) . time() . '.' . $image->getClientOriginalExtension();
+                    $name = rand(100000, 9999999) . time() . '.' . $image->getClientOriginalExtension();
                     $image->storeAs('public/images/avatar/', $name);
                     return 'storage/images/avatar/' . $name;
                 }
@@ -250,7 +263,8 @@ class UserController extends Controller
                 try {
                     $tk =  Auth::setToken($item)->getToken();
                     Auth::invalidate($tk);
-                } catch (\Exception $e) {}
+                } catch (\Exception $e) {
+                }
             }
             $user->update(['tokens' => null]);
             return response(['message' => 'Đã đăng xuất trên tất cả các thiết bị'], 200);
