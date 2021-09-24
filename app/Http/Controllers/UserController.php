@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function createUser(Request $request)
     {
-        $data = $request->only('email', 'name', 'user_name', 'role_id', 'password', 'url_image', 'password', 'id');
+        $data = $request->only('email', 'name', 'user_name', 'role_id', 'password', 'url_image', 'password', 'id', 'company_name');
         $confirmPassword = $request->confirmPassword;
         $validator =  Validator::make($data, [
             'name' => 'required',
@@ -76,7 +76,7 @@ class UserController extends Controller
 
     public function updateUser(Request $request)
     {
-        $data = $request->only('email', 'name', 'user_name', 'role_id', 'password', 'url_image', 'password', 'id');
+        $data = $request->only('email', 'name', 'user_name', 'role_id', 'password', 'url_image', 'password', 'id', 'company_name');
         $confirmPassword = $request->confirmPassword;
         $validator = Validator::make($data, [
             'id' => 'required',
