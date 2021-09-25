@@ -1,6 +1,6 @@
-<div>Xin chào {{$data['name']}} !</div>
-<div>Đây là mã xác thực của bạn <div style="font-size: 20px; font-weight: bold">{{ $data['code'] }} </div></div>
+<div>Hi {{$data['name']}} !</div>
+<div>This is your authentication code <div style="font-size: 20px; font-weight: bold">{{ $data['code'] }} </div></div>
 <br />
-<div>Lưu ý: Mã xác thực có hiệu lực trong {{$data['minutes']}} phút</div>
+<div>Note: The authentication code is valid in {{$data['minutes']}} minutes</div>
 <br>
-<div>Thanh You</div>
+<div>Thanh You!</div>
