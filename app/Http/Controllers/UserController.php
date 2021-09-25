@@ -96,13 +96,40 @@ class UserController extends Controller
             'email' => 'required',
             'user_name' => 'required',
             'role_id' => 'required',
+        ], [
+            'name.required' => 'Tên không thể bỏ trống',
+            'email.required' => 'Email không thể bỏ trống',
+            'username.required' => 'Tên đăng nhập không thể bỏ trống',
+            'role_id.required' => 'Quyền không thể bỏ trống',
         ]);
+        if (isset($data['password'])) {
+            $validator = Validator::make($data, [
+                'id' => 'required',
+                'name' => 'required',
+                'user_name' => 'required',
+                'email' => 'required|email',
+                'role_id' => 'required',
+                'password' => 'min:8|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
+            ], [
+                'password.regex' => 'Mật khẩu không đủ mạnh',
+                'password.min' => 'Mật khẩu tối thiểu 8 ký tự',
+                'name.required' => 'Tên không thể bỏ trống',
+                'email.required' => 'Email không thể bỏ trống',
+                'user_name.required' => 'Tên đăng nhập không thể bỏ trống',
+                'role_id.required' => 'Quyền không thể bỏ trống',
+            ]);
+        }
         if ($validator->fails()) {
+            $loi = "";
+            foreach ($validator->errors()->all() as $it) {
+                $loi = $loi . '' . $it . ", ";
+            };
             return response()->json([
-                'message' => __('Dữ liệu không hợp lệ'),
+                'code' => 400,
+                'message' => $loi,
                 'data' => [
-                    $validator->errors()->all()
-                ]
+                    $validator->errors()->all(),
+                ],
             ], 400);
         }
         $checkEmail = User::where('email', $data['email'])->where('id', '<>', $data['id'])->first();
