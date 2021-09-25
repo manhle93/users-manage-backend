@@ -29,7 +29,7 @@ class VerifyEmail extends Mailable
      */
     public function build()
     {
-        return $this->subject('XÁC NHẬN BẢO MẬT!')->view('mail.VerifyEmail')->with(['data' => $this->data]);
+        return $this->subject('TEN-TECH CONFIRMED SECURITY')->view('mail.VerifyEmail')->with(['data' => $this->data]);
 
     }
 }
