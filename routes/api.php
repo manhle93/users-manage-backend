@@ -40,28 +40,15 @@ Route::post('/uploadavatar', 'UserController@uploadAvatarManagement');
 Route::post('/logoutall', 'UserController@logOutAll');
 Route::post('updatemyuser', 'UserController@updateMyUser');
 
-/************** Danh muc Api ********************/
-Route::get('/danhmuc', 'DanhMucController@getDanhMuc');
-Route::get('/danhmuccon', 'DanhMucController@getDanhMucCon');
-Route::post('/danhmuc', 'DanhMucController@addDanhMucCon');
-Route::put('/danhmuc', 'DanhMucController@editDanhMucCon');
+Route::get('/lookups', 'CustomerController@getCategories');
 
-/************** Cong ty Api ********************/
-Route::get('/phongban', 'PhongBanController@getPhongBan');
-Route::post('/phongban', 'PhongBanController@addPhongBan');
-Route::put('/phongban', 'PhongBanController@editPhongBan');
-Route::put('/activephongban', 'PhongBanController@activeDeactive');
-
-Route::get('/nhomto', 'NhomToController@getNhomTo');
-Route::get('/nhomtotructhuoc', 'NhomToController@getNhomToTrucThuoc');
-Route::post('/nhomto', 'NhomToController@addNhomTo');
-Route::put('/nhomto', 'NhomToController@editNhomTo');
-
-/************** Nhan su Api ********************/
-Route::get('/nhanvien', 'NhanVienController@getNhanVien');
-Route::post('/nhanvien', 'NhanVienController@addNhanVien');
-Route::put('/nhanvien', 'NhanVienController@editNhanVien');
-Route::get('/showNhanVien', 'NhanVienController@showNhanVien');
+/************** Customer Api ********************/
+Route::post('/addcustomer', 'CustomerController@addCustomer');
+Route::get('/addcustomerinfo', 'CustomerController@getCustomerInfo');
+Route::put('/editcustomerinfo', 'CustomerController@updateCustomer');
+Route::post('/addcomment', 'CustomerController@addComment');
+Route::get('/getcomment', 'CustomerController@getComment');
+Route::get('/customers', 'CustomerController@getCutomers');
 
 
 /************** Upload File Api ********************/
