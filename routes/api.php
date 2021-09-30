@@ -50,6 +50,8 @@ Route::post('/addcomment', 'CustomerController@addComment');
 Route::get('/getcomment', 'CustomerController@getComment');
 Route::get('/customers', 'CustomerController@getCutomers');
 Route::put('/editcomment', 'CustomerController@editComment');
+Route::put('/editsinged', 'CustomerController@setStatusSinged');
+Route::put('/deletecomment', 'CustomerController@deleteComment');
 
 
 /************** Upload File Api ********************/

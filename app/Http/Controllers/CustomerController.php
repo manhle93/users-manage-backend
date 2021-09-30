@@ -205,7 +205,8 @@ class CustomerController extends Controller
             return response(['message' => 'Không thể comment'], 500);
         }
     }
-    public function getCutomers(Request $request){
+    public function getCutomers(Request $request)
+    {
         $page = $request->get('page', 1);
         $per_pager = $request->get('perPage', 5);
         $search = $request->get('search', null);
@@ -222,7 +223,8 @@ class CustomerController extends Controller
         return $data;
     }
 
-    public function editComment(Request $request){
+    public function editComment(Request $request)
+    {
         $data = $request->only(
             'id',
             'comment'
@@ -239,16 +241,71 @@ class CustomerController extends Controller
                 ]
             ], 400);
         }
-        try{
+        try {
             $comment = Comment::where('id', $data['id'])->first();
-            if($comment->from_user_id !== Auth::user()->id){
+            if ($comment->from_user_id !== Auth::user()->id) {
                 return response(['message' => 'Không thể xóa comment của người khác'], 422);
             }
             Comment::find($data['id'])->update([
                 'content' => $data['comment']
             ]);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response(['message' => 'Không thể comment'], 500);
+        }
+    }
+
+    public function deleteComment(Request $request)
+    {
+        $data = $request->only(
+            'id',
+        );
+        $validator =  Validator::make($data, [
+            'id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => __('Dữ liệu không hợp lệ'),
+                'data' => [
+                    $validator->errors()->all()
+                ]
+            ], 400);
+        }
+        try {
+            $comment = Comment::where('id', $data['id'])->first();
+            $comment->delete(); 
+        } catch (\Exception $e) {
+            return response(['message' => 'Không thể xóa comment'], 500);
+        }
+    }
+
+    public function setStatusSinged(Request $request)
+    {
+        $data = $request->only(
+            'ids',
+            'status'
+        );
+        $validator =  Validator::make($data, [
+            'ids' => 'required',
+            'status' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => __('Dữ liệu không hợp lệ'),
+                'data' => [
+                    $validator->errors()->all()
+                ]
+            ], 400);
+        }
+        try{
+            DB::beginTransaction();
+            foreach($data['ids'] as $id){
+                Customer::find($id)->update(['signed' => $data['status']]);
+            }
+            DB::commit();
+            return response(['message' => 'Done']);
+        }catch(\Exception $e){
+            DB::rollBack();
+            return response(['message' => 'Error'], 500);
         }
     }
 }
