@@ -188,7 +188,6 @@ class CustomerController extends Controller
                 'content' => $content
             ]);
         } catch (\Exception $e) {
-            return $e;
             return response(['message' => 'Không thể comment'], 500);
         }
     }
@@ -221,5 +220,35 @@ class CustomerController extends Controller
 
         $data = $query->orderBy('updated_at', 'DESC')->paginate($per_pager, ['*'], 'page', $page);
         return $data;
+    }
+
+    public function editComment(Request $request){
+        $data = $request->only(
+            'id',
+            'comment'
+        );
+        $validator =  Validator::make($data, [
+            'id' => 'required',
+            'comment' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => __('Dữ liệu không hợp lệ'),
+                'data' => [
+                    $validator->errors()->all()
+                ]
+            ], 400);
+        }
+        try{
+            $comment = Comment::where('id', $data['id'])->first();
+            if($comment->from_user_id !== Auth::user()->id){
+                return response(['message' => 'Không thể xóa comment của người khác'], 422);
+            }
+            Comment::find($data['id'])->update([
+                'content' => $data['comment']
+            ]);
+        }catch(\Exception $e){
+            return response(['message' => 'Không thể comment'], 500);
+        }
     }
 }
