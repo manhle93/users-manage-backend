@@ -254,7 +254,6 @@ class CustomerController extends Controller
         }
     }
 
-<<<<<<< HEAD
     public function importData(Request $request)
     {
         $customers = $request->get('data', []);
@@ -284,60 +283,6 @@ class CustomerController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return response(['message' => 'Không thể import'], 500);
-=======
-    public function deleteComment(Request $request)
-    {
-        $data = $request->only(
-            'id',
-        );
-        $validator =  Validator::make($data, [
-            'id' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => __('Dữ liệu không hợp lệ'),
-                'data' => [
-                    $validator->errors()->all()
-                ]
-            ], 400);
-        }
-        try {
-            $comment = Comment::where('id', $data['id'])->first();
-            $comment->delete(); 
-        } catch (\Exception $e) {
-            return response(['message' => 'Không thể xóa comment'], 500);
-        }
-    }
-
-    public function setStatusSinged(Request $request)
-    {
-        $data = $request->only(
-            'ids',
-            'status'
-        );
-        $validator =  Validator::make($data, [
-            'ids' => 'required',
-            'status' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => __('Dữ liệu không hợp lệ'),
-                'data' => [
-                    $validator->errors()->all()
-                ]
-            ], 400);
-        }
-        try{
-            DB::beginTransaction();
-            foreach($data['ids'] as $id){
-                Customer::find($id)->update(['signed' => $data['status']]);
-            }
-            DB::commit();
-            return response(['message' => 'Done']);
-        }catch(\Exception $e){
-            DB::rollBack();
-            return response(['message' => 'Error'], 500);
->>>>>>> 465218ecb79cbde06568eef8e70918f3ec8dc874
         }
     }
 }
