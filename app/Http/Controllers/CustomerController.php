@@ -205,11 +205,12 @@ class CustomerController extends Controller
             return response(['message' => 'Không thể comment'], 500);
         }
     }
-    public function getCutomers(Request $request){
+    public function getCutomers(Request $request)
+    {
         $page = $request->get('page', 1);
         $per_pager = $request->get('perPage', 5);
         $search = $request->get('search', null);
-        $query = Customer::query();
+        $query = Customer::with('industry');
         if ($search != null) {
             $search = trim($search);
             $query->where('address', 'ilike', "%{$search}%")
@@ -222,7 +223,8 @@ class CustomerController extends Controller
         return $data;
     }
 
-    public function editComment(Request $request){
+    public function editComment(Request $request)
+    {
         $data = $request->only(
             'id',
             'comment'
@@ -239,16 +241,48 @@ class CustomerController extends Controller
                 ]
             ], 400);
         }
-        try{
+        try {
             $comment = Comment::where('id', $data['id'])->first();
-            if($comment->from_user_id !== Auth::user()->id){
+            if ($comment->from_user_id !== Auth::user()->id) {
                 return response(['message' => 'Không thể xóa comment của người khác'], 422);
             }
             Comment::find($data['id'])->update([
                 'content' => $data['comment']
             ]);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response(['message' => 'Không thể comment'], 500);
+        }
+    }
+
+    public function importData(Request $request)
+    {
+        $customers = $request->get('data', []);
+        try {
+            DB::beginTransaction();
+            foreach ($customers as $data) {
+                $userLogin['password'] = Hash::make(12345678);
+                $userLogin['role_id'] = 2;
+                $userLogin['name'] = $data['company_name'];
+                $userLogin['company_name'] = $data['company_name'];
+                $userLogin['email'] = $data['manager_email'];
+                $userLogin['user_name'] = $data['manager_email'];
+                $user = User::create($userLogin);
+                Customer::create([
+                    'industry_id' => $data['industry_id'],
+                    'company_name' => $data['company_name'],
+                    'homepage_url' => $data['homepage_url'],
+                    'manager_email' => $data['manager_email'],
+                    'representative_name' => $data['representative_name'],
+                    'user_id' => $user->id,
+                    'address' => $data['address'],
+                    'phone_number' => $data['phone_number']
+                ]);
+            }
+            DB::commit();
+            return response(['message' => 'Success'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response(['message' => 'Không thể import'], 500);
         }
     }
 }

@@ -49,6 +49,7 @@ Route::put('/editcustomerinfo', 'CustomerController@updateCustomer');
 Route::post('/addcomment', 'CustomerController@addComment');
 Route::get('/getcomment', 'CustomerController@getComment');
 Route::get('/customers', 'CustomerController@getCutomers');
+Route::post('/importcustomers', 'CustomerController@importData');
 Route::put('/editcomment', 'CustomerController@editComment');
 
 

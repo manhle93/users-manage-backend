@@ -23,6 +23,7 @@ class AuthController extends Controller
 
     public function login()
     {
+        set_time_limit(0);
         $data = request(['email_username', 'password']);
         $user = User::where('email', $data['email_username'])->orWhere('user_name', $data['email_username'])->first();
         if (!$user) {
