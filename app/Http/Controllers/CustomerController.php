@@ -210,6 +210,8 @@ class CustomerController extends Controller
         $page = $request->get('page', 1);
         $per_pager = $request->get('perPage', 5);
         $search = $request->get('search', null);
+        $search_industry = $request->get('search_industry', null);
+        $search_status = $request->get('search_status', null);
         $query = Customer::with('industry', 'user');
         if ($search != null) {
             $search = trim($search);
@@ -217,6 +219,12 @@ class CustomerController extends Controller
                 ->orWhere('company_name', 'ilike', "%{$search}%")
                 ->orWhere('representative_name', 'ilike', "%{$search}%")
                 ->orWhere('phone_number', 'ilike', "%{$search}%");
+        }
+        if ($search_status != null) {
+            $query->where('signed', $search_status);
+        }
+        if ($search_industry != null) {
+            $query->where('industry_id', $search_industry);
         }
 
         $data = $query->orderBy('updated_at', 'DESC')->paginate($per_pager, ['*'], 'page', $page);
