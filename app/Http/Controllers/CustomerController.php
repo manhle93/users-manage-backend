@@ -210,7 +210,7 @@ class CustomerController extends Controller
         $page = $request->get('page', 1);
         $per_pager = $request->get('perPage', 5);
         $search = $request->get('search', null);
-        $query = Customer::with('industry');
+        $query = Customer::with('industry', 'user');
         if ($search != null) {
             $search = trim($search);
             $query->where('address', 'ilike', "%{$search}%")
