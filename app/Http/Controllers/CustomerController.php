@@ -265,7 +265,7 @@ class CustomerController extends Controller
         }
     }
 
-    public function countPrint(){
+    public function countPrint(Request $request){
         $data = $request->only(
             'countprint'
         );
