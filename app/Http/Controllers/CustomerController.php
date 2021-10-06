@@ -265,6 +265,17 @@ class CustomerController extends Controller
         }
     }
 
+    public function countPrint(){
+        $data = $request->only(
+            'countprint'
+        );
+        foreach ($data as $idcustomer) {
+            $customerData = Customer::find($idcustomer);
+            $countPrint = $customerData->print_count;
+            $customerData->update(['print_count' => int($countPrint + 1)]);
+        }
+    }
+
     public function importData(Request $request)
     {
         $customers = $request->get('data', []);

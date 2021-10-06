@@ -47,6 +47,8 @@ Route::post('/addcustomer', 'CustomerController@addCustomer');
 Route::get('/addcustomerinfo', 'CustomerController@getCustomerInfo');
 Route::put('/editcustomerinfo', 'CustomerController@updateCustomer');
 Route::post('/addcomment', 'CustomerController@addComment');
+Route::post('/countprint', 'CustomerController@countPrint');
+
 Route::get('/getcomment', 'CustomerController@getComment');
 Route::get('/customers', 'CustomerController@getCutomers');
 Route::post('/importcustomers', 'CustomerController@importData');
