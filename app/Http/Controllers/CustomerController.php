@@ -266,9 +266,7 @@ class CustomerController extends Controller
     }
 
     public function countPrint(Request $request){
-        $data = $request->only(
-            'countprint'
-        );
+        $data = $request->get('countprint', []);
         foreach ($data as $idcustomer) {
             $customerData = Customer::where('id',$idcustomer)->first();
             $countPrint = $customerData->print_count;
