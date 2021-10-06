@@ -270,7 +270,7 @@ class CustomerController extends Controller
             'countprint'
         );
         foreach ($data as $idcustomer) {
-            $customerData = Customer::find($idcustomer);
+            $customerData = Customer::where('id',$idcustomer)->first();
             $countPrint = $customerData->print_count;
             $customerData->update(['print_count' => int($countPrint + 1)]);
         }
