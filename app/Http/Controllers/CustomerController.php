@@ -274,6 +274,7 @@ class CustomerController extends Controller
             $countPrint = $customerData->print_count;
             $customerData->update(['print_count' => int($countPrint + 1)]);
         }
+        return response(['message' => 'Success'], 200);
     }
 
     public function importData(Request $request)
