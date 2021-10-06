@@ -40,7 +40,7 @@ class CustomerController extends Controller
             'person_in_charge_name',
             'person_in_charge_email',
             'person_in_charge_email_2',
-            'note'
+            'email'
         );
 
         $comment =  $request->only('comment');
@@ -124,7 +124,7 @@ class CustomerController extends Controller
             'person_in_charge_name',
             'person_in_charge_email',
             'person_in_charge_email_2',
-            'note'
+            'email'
         );
         $comment =  $request->only('comment');
         // $userLogin = $request->only('user_name', 'email', 'name', 'url_image', 'user_id');
