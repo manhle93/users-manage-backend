@@ -117,10 +117,10 @@ class CustomerController extends Controller
             'signed',
             'manager_name',
             'manager_email',
-            'manager_phone',
+            'person_in_charge_name_2',
             'person_in_charge_name',
             'person_in_charge_email',
-            'person_in_charge_phone',
+            'person_in_charge_email_2',
             'note'
         );
         $comment =  $request->only('comment');
