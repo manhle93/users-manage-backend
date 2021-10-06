@@ -42,6 +42,7 @@ class CustomerController extends Controller
             'person_in_charge_email_2',
             'note'
         );
+
         $comment =  $request->only('comment');
         $userLogin = $request->only('user_name', 'email', 'name', 'url_image');
         $validator =  Validator::make($data, [
@@ -49,34 +50,36 @@ class CustomerController extends Controller
             'postal_code' => 'required',
             'address' => 'required'
         ]);
-        $validatorUser =  Validator::make($userLogin, [
-            'user_name' => 'required',
-            'email' => 'required',
-        ]);
-        if ($validator->fails() || $validatorUser->fails()) {
+        // $validatorUser =  Validator::make($userLogin, [
+        //     'user_name' => 'required',
+        //     'email' => 'required',
+        // ]);
+        if ($validator->fails()) {
             return response()->json([
                 'message' => __('Dữ liệu không hợp lệ'),
                 'data' => [
-                    $validatorUser->errors()->all(),
+                    // $validatorUser->errors()->all(),
                     $validator->errors()->all()
                 ]
             ], 400);
         }
-        $checkEmail = User::where('email', $userLogin['email'])->first();
-        $checkUserName = User::where('user_name', $userLogin['user_name'])->first();
-        if ($checkEmail) {
-            return response(['message' => 'Email đã tồn tại !'], 401);
-        }
-        if ($checkUserName) {
-            return response(['message' => 'Tên đăng nhập (User name) đã tồn tại !'], 401);
-        }
+        // $checkEmail = User::where('email', $userLogin['email'])->first();
+        // $checkUserName = User::where('user_name', $userLogin['user_name'])->first();
+        // if ($checkEmail) {
+        //     return response(['message' => 'Email đã tồn tại !'], 401);
+        // }
+        // if ($checkUserName) {
+        //     return response(['message' => 'Tên đăng nhập (User name) đã tồn tại !'], 401);
+        // }
         try {
             DB::beginTransaction();
-            $userLogin['password'] = Hash::make(12345678);
-            $userLogin['role_id'] = 2;
-            $userLogin['name'] = $data['company_name'];
-            $userLogin['company_name'] = $data['company_name'];
-            $user = User::create($userLogin);
+            // $userLogin['password'] = Hash::make(12345678);
+            // $userLogin['role_id'] = 2;
+            // $userLogin['name'] = $data['company_name'];
+            // $userLogin['company_name'] = $data['company_name'];
+
+            // $user = User::create($userLogin);
+            $user = Auth::user();
             $data['user_id'] = $user->id;
             Customer::create($data);
             if ($comment && $comment['comment']) {
@@ -90,7 +93,7 @@ class CustomerController extends Controller
             return response(['message' => 'Success'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response(['message' => 'Không thể thêm mới'], 500);
+            return response(['message' => 'Can not added!'], 500);
         }
     }
     public function getCustomerInfo(Request $request)
@@ -124,40 +127,40 @@ class CustomerController extends Controller
             'note'
         );
         $comment =  $request->only('comment');
-        $userLogin = $request->only('user_name', 'email', 'name', 'url_image', 'user_id');
+        // $userLogin = $request->only('user_name', 'email', 'name', 'url_image', 'user_id');
         $validator =  Validator::make($data, [
             'id' => 'required',
             'company_name' => 'required',
             'postal_code' => 'required',
             'address' => 'required'
         ]);
-        $validatorUser =  Validator::make($userLogin, [
-            'user_name' => 'required',
-            'email' => 'required',
-            'user_id' => 'required',
-        ]);
-        if ($validator->fails() || $validatorUser->fails()) {
+        // $validatorUser =  Validator::make($userLogin, [
+        //     'user_name' => 'required',
+        //     'email' => 'required',
+        //     'user_id' => 'required',
+        // ]);
+        if ($validator->fails()) {
             return response()->json([
                 'message' => __('Dữ liệu không hợp lệ'),
                 'data' => [
-                    $validatorUser->errors()->all(),
+                    // $validatorUser->errors()->all(),
                     $validator->errors()->all()
                 ]
             ], 400);
         }
-        $checkEmail = User::where('email', $userLogin['email'])->where('id', '<>', $userLogin['user_id'])->first();
-        $checkUserName = User::where('user_name', $userLogin['user_name'])->where('id', '<>', $userLogin['user_id'])->first();
-        if ($checkEmail) {
-            return response(['message' => 'Email đã tồn tại !'], 401);
-        }
-        if ($checkUserName) {
-            return response(['message' => 'Tên đăng nhập (User name) đã tồn tại !'], 401);
-        }
+        // $checkEmail = User::where('email', $userLogin['email'])->where('id', '<>', $userLogin['user_id'])->first();
+        // $checkUserName = User::where('user_name', $userLogin['user_name'])->where('id', '<>', $userLogin['user_id'])->first();
+        // if ($checkEmail) {
+        //     return response(['message' => 'Email đã tồn tại !'], 401);
+        // }
+        // if ($checkUserName) {
+        //     return response(['message' => 'Tên đăng nhập (User name) đã tồn tại !'], 401);
+        // }
         try {
             DB::beginTransaction();
-            $userLogin['name'] = $data['company_name'];
-            $userLogin['company_name'] = $data['company_name'];
-            $user = User::find($userLogin['user_id'])->update(['email' => $userLogin['email'], 'user_name' => $userLogin['user_name']]);
+            // $userLogin['name'] = $data['company_name'];
+            // $userLogin['company_name'] = $data['company_name'];
+            // $user = User::find($userLogin['user_id'])->update(['email' => $userLogin['email'], 'user_name' => $userLogin['user_name']]);
             Customer::find($data['id'])->update($data);
             if ($comment && $comment['comment']) {
                 Comment::create([
