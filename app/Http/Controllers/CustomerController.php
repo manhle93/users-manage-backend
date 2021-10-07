@@ -270,7 +270,10 @@ class CustomerController extends Controller
         foreach ($data as $idcustomer) {
             $customerData = Customer::where('id',$idcustomer)->first();
             $countPrint = $customerData->print_count;
-            $customerData->update(['print_count' => (int)$countPrint + 1]);
+            $customerData->update([
+                'print_count' => (int)$countPrint + 1,
+                'last_printed_date' => Carbon::now()
+            ]);
         }
         return response(['message' => 'Success'], 200);
     }
