@@ -54,7 +54,7 @@ class Handler extends ExceptionHandler
             if ($exception->getMessage() == "token_expire") {
                 return response([
                     'code' => 'token_expire',
-                    'message' => 'Phiên đăng nhập đã kết thúc! Vui lòng đăng nhập lại để sử dụng phần mềm!'
+                    'message' => 'ログインされていません。もう一度ログインしてください。'
                 ], 401);
             } else if ($exception->getMessage() == "jwt-auth") {
                 return response([
@@ -64,7 +64,7 @@ class Handler extends ExceptionHandler
             } else {
                 return response([
                     'code' => 'unauthorized',
-                    'message' => 'Hãy đăng nhập để sử dụng phần mềm!'
+                    'message' => 'ログインされていません。もう一度ログインしてください。!'
                 ], 401);
             }
         }
