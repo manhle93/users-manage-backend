@@ -55,7 +55,7 @@ class SystemMenuController extends Controller
         ]);
         if ($validator->fails()) {
             return response()->json([
-                'message' => __('Dữ liệu không hợp lệ'),
+                'message' => __('入力した内容に不備があります。入力項目を確認してください。'),
                 'data' => [
                     $validator->errors()->all()
                 ]
@@ -84,7 +84,7 @@ class SystemMenuController extends Controller
             return response(['message' => 'Thành công'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response(['message' => 'Không thể cập nhật Menu'], 500);
+            return response(['message' => '更新は失敗しました。'], 500);
         }
     }
 
@@ -97,7 +97,7 @@ class SystemMenuController extends Controller
         ]);
         if ($validator->fails()) {
             return response()->json([
-                'message' => __('Dữ liệu không hợp lệ'),
+                'message' => __('入力した内容に不備があります。入力項目を確認してください。'),
                 'data' => [
                     $validator->errors()->all()
                 ]
@@ -138,7 +138,7 @@ class SystemMenuController extends Controller
         try{
             SystemMenu::find($data['id'])->delete();
         }catch(\Exception $e){
-            return response(['message' => 'Không thể xóa menu']);
+            return response(['message' => '削除は失敗しました。']);
         }
     }
 }

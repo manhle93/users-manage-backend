@@ -57,7 +57,7 @@ class CustomerController extends Controller
         // ]);
         if ($validator->fails()) {
             return response()->json([
-                'message' => __('Dữ liệu không hợp lệ'),
+                'message' => __('入力した内容に不備があります。入力項目を確認してください。'),
                 'data' => [
                     // $validatorUser->errors()->all(),
                     $validator->errors()->all()
@@ -67,10 +67,10 @@ class CustomerController extends Controller
         // $checkEmail = User::where('email', $userLogin['email'])->first();
         // $checkUserName = User::where('user_name', $userLogin['user_name'])->first();
         // if ($checkEmail) {
-        //     return response(['message' => 'Email đã tồn tại !'], 401);
+        //     return response(['message' => 'メールアドレスは既に存在しています。 !'], 401);
         // }
         // if ($checkUserName) {
-        //     return response(['message' => 'Tên đăng nhập (User name) đã tồn tại !'], 401);
+        //     return response(['message' => 'ログイン用のユーザ名は既に存在しています。 !'], 401);
         // }
         try {
             DB::beginTransaction();
@@ -142,7 +142,7 @@ class CustomerController extends Controller
         // ]);
         if ($validator->fails()) {
             return response()->json([
-                'message' => __('Dữ liệu không hợp lệ'),
+                'message' => __('入力した内容に不備があります。入力項目を確認してください。'),
                 'data' => [
                     // $validatorUser->errors()->all(),
                     $validator->errors()->all()
@@ -152,10 +152,10 @@ class CustomerController extends Controller
         // $checkEmail = User::where('email', $userLogin['email'])->where('id', '<>', $userLogin['user_id'])->first();
         // $checkUserName = User::where('user_name', $userLogin['user_name'])->where('id', '<>', $userLogin['user_id'])->first();
         // if ($checkEmail) {
-        //     return response(['message' => 'Email đã tồn tại !'], 401);
+        //     return response(['message' => 'メールアドレスは既に存在しています。 !'], 401);
         // }
         // if ($checkUserName) {
-        //     return response(['message' => 'Tên đăng nhập (User name) đã tồn tại !'], 401);
+        //     return response(['message' => 'ログイン用のユーザ名は既に存在しています。 !'], 401);
         // }
         try {
             DB::beginTransaction();
@@ -174,7 +174,7 @@ class CustomerController extends Controller
             return response(['message' => 'Success'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response(['message' => 'Không thể thêm mới'], 500);
+            return response(['message' => '新規作成は失敗しました。'], 500);
         }
     }
 
@@ -247,7 +247,7 @@ class CustomerController extends Controller
         ]);
         if ($validator->fails()) {
             return response()->json([
-                'message' => __('Dữ liệu không hợp lệ'),
+                'message' => __('入力した内容に不備があります。入力項目を確認してください。'),
                 'data' => [
                     $validator->errors()->all()
                 ]
@@ -256,7 +256,7 @@ class CustomerController extends Controller
         try {
             $comment = Comment::where('id', $data['id'])->first();
             if ($comment->from_user_id !== Auth::user()->id) {
-                return response(['message' => 'Không thể xóa comment của người khác'], 422);
+                return response(['message' => '削除は失敗しました。'], 422);
             }
             Comment::find($data['id'])->update([
                 'content' => $data['comment']
@@ -322,7 +322,7 @@ class CustomerController extends Controller
         ]);
         if ($validator->fails()) {
             return response()->json([
-                'message' => __('Dữ liệu không hợp lệ'),
+                'message' => __('入力した内容に不備があります。入力項目を確認してください。'),
                 'data' => [
                     $validator->errors()->all()
                 ]

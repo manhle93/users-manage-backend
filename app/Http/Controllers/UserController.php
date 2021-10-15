@@ -135,10 +135,10 @@ class UserController extends Controller
         $checkEmail = User::where('email', $data['email'])->where('id', '<>', $data['id'])->first();
         $checkUserName = User::where('user_name', $data['user_name'])->where('id', '<>', $data['id'])->first();
         if ($checkEmail) {
-            return response(['message' => 'Email đã tồn tại !'], 401);
+            return response(['message' => 'メールアドレスは既に存在しています。 !'], 401);
         }
         if ($checkUserName) {
-            return response(['message' => 'Tên đăng nhập (User name) đã tồn tại !'], 401);
+            return response(['message' => 'ログイン用のユーザ名は既に存在しています。 !'], 401);
         }
         if (isset($data['password']) && $data['password']) {
             if ($data['password'] !== $confirmPassword) {
@@ -149,7 +149,7 @@ class UserController extends Controller
         try {
             User::find($data['id'])->update($data);
         } catch (\Exception $e) {
-            return response(['message' => 'Không thể cập nhật người dùng']);
+            return response(['message' => '更新は失敗しました。']);
         }
     }
     public function updateMyUser(Request $request)
@@ -162,7 +162,7 @@ class UserController extends Controller
         ]);
         if ($validator->fails()) {
             return response()->json([
-                'message' => __('Dữ liệu không hợp lệ'),
+                'message' => __('入力した内容に不備があります。入力項目を確認してください。'),
                 'data' => [
                     $validator->errors()->all()
                 ]
@@ -172,15 +172,15 @@ class UserController extends Controller
         $checkEmail = User::where('email', $data['email'])->where('id', '<>', $user->id)->first();
         $checkUserName = User::where('user_name', $data['user_name'])->where('id', '<>', $user->id)->first();
         if ($checkEmail) {
-            return response(['message' => 'Email đã tồn tại !'], 401);
+            return response(['message' => 'メールアドレスは既に存在しています。 !'], 401);
         }
         if ($checkUserName) {
-            return response(['message' => 'Tên đăng nhập (User name) đã tồn tại !'], 401);
+            return response(['message' => 'ログイン用のユーザ名は既に存在しています。 !'], 401);
         }
         try {
             User::find($user->id)->update($data);
         } catch (\Exception $e) {
-            return response(['message' => 'Không thể cập nhật người dùng']);
+            return response(['message' => '更新は失敗しました。']);
         }
     }
     public function activeDeactive(Request $request)
@@ -192,7 +192,7 @@ class UserController extends Controller
         ]);
         if ($validator->fails()) {
             return response()->json([
-                'message' => __('Dữ liệu không hợp lệ'),
+                'message' => __('入力した内容に不備があります。入力項目を確認してください。'),
                 'data' => [
                     $validator->errors()->all()
                 ]
@@ -202,7 +202,7 @@ class UserController extends Controller
             User::find($data['userId'])->update(['active' => $data['active']]);
             return response(['message' => 'Success'], 200);
         } catch (\Exception $e) {
-            return response(['message' => 'Không thể cập nhật'], 500);
+            return response(['message' => '更新は失敗しました。'], 500);
         }
     }
 
@@ -311,7 +311,7 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'code' => 400,
-                'message' => 'Dữ liệu không hợp lệ',
+                'message' => '入力した内容に不備があります。入力項目を確認してください。',
                 'data' => [
                     $validator->errors()->all()
                 ]

@@ -87,7 +87,7 @@ class AuthController extends Controller
         ]);
         if ($validator->fails()) {
             return response()->json([
-                'message' => __('Dữ liệu không hợp lệ'),
+                'message' => __('入力した内容に不備があります。入力項目を確認してください。'),
                 'data' => [
                     $validator->errors()->all()
                 ]
@@ -96,11 +96,11 @@ class AuthController extends Controller
         
         $user =  User::where('email', $data['email_username'])->orWhere('user_name', $data['email_username'])->first();
         if(!$user){
-            return response(['message' => 'Người dùng không tồn tại'], 404);
+            return response(['message' => 'このアカウントは存在していません。'], 404);
         };
         $verify = Cache::get($user->email);
         if(!$verify){
-            return response(['message' => 'Đã hết thời gian xác minh!'], 422);
+            return response(['message' => '認証コードの有効期限が過ぎています。再ログインしてください。!'], 422);
         }
         
         if($verify['code'] == $data['code']){
@@ -119,7 +119,7 @@ class AuthController extends Controller
             $user->update(['tokens' => $tokensSaved]);
             return $this->respondWithToken($verify['token']);
         }else {
-            return response(['message' => 'Mã xác thực không đúng'], 401);
+            return response(['message' => '認証コードは正しくありません。'], 401);
         }
 
     }
@@ -171,6 +171,8 @@ class AuthController extends Controller
     public function refresh()
     {
         try {
+            // neu truoc do 1h ma khong dung den
+
             return $this->respondWithToken(Auth::refresh());
         } catch (\Exception $e) {
             return response(['message' => 'Token không hợp lệ'], 500);

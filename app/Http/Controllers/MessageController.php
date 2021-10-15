@@ -17,7 +17,7 @@ class MessageController extends Controller
         ]);
         if ($validator->fails()) {
             return response()->json([
-                'message' => __('Dữ liệu không hợp lệ'),
+                'message' => __('入力した内容に不備があります。入力項目を確認してください。'),
                 'data' => [
                     $validator->errors()->all()
                 ]

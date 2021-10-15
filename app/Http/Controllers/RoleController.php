@@ -50,7 +50,7 @@ class RoleController extends Controller
         ]);
         if ($validator->fails()) {
             return response()->json([
-                'message' => __('Dữ liệu không hợp lệ'),
+                'message' => __('入力した内容に不備があります。入力項目を確認してください。'),
                 'data' => [
                     $validator->errors()->all()
                 ]
@@ -71,7 +71,7 @@ class RoleController extends Controller
             return response(['message' => 'Success'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response(['message' => 'Không thể cập nhật'], 501);
+            return response(['message' => '更新は失敗しました。'], 501);
         }
     }
 }

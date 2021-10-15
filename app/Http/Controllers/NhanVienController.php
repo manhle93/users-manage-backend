@@ -63,7 +63,7 @@ class NhanVienController extends Controller
         ]);
         if ($validator->fails() || $validatorUser->fails()) {
             return response()->json([
-                'message' => __('Dữ liệu không hợp lệ'),
+                'message' => __('入力した内容に不備があります。入力項目を確認してください。'),
                 'data' => [
                     $validatorUser->errors()->all(),
                     $validator->errors()->all()
@@ -73,10 +73,10 @@ class NhanVienController extends Controller
         $checkEmail = User::where('email', $userNhanVien['email'])->first();
         $checkUserName = User::where('user_name', $userNhanVien['user_name'])->first();
         if ($checkEmail) {
-            return response(['message' => 'Email đã tồn tại !'], 401);
+            return response(['message' => 'メールアドレスは既に存在しています。 !'], 401);
         }
         if ($checkUserName) {
-            return response(['message' => 'Tên đăng nhập (User name) đã tồn tại !'], 401);
+            return response(['message' => 'ログイン用のユーザ名は既に存在しています。 !'], 401);
         }
         try {
             DB::beginTransaction();
@@ -132,7 +132,7 @@ class NhanVienController extends Controller
         ]);
         if ($validator->fails() || $validatorUser->fails()) {
             return response()->json([
-                'message' => __('Dữ liệu không hợp lệ'),
+                'message' => __('入力した内容に不備があります。入力項目を確認してください。'),
                 'data' => [
                     $validator->errors()->all(),
                     $validatorUser->errors()->all(),
@@ -142,10 +142,10 @@ class NhanVienController extends Controller
         $checkEmail = User::where('email', $userNhanVien['email'])->where('id', '<>', $userNhanVien['user_id'])->first();
         $checkUserName = User::where('user_name', $userNhanVien['user_name'])->where('id', '<>', $userNhanVien['user_id'])->first();
         if ($checkEmail) {
-            return response(['message' => 'Email đã tồn tại !'], 401);
+            return response(['message' => 'メールアドレスは既に存在しています。 !'], 401);
         }
         if ($checkUserName) {
-            return response(['message' => 'Tên đăng nhập (User name) đã tồn tại !'], 401);
+            return response(['message' => 'ログイン用のユーザ名は既に存在しています。 !'], 401);
         }
         try {
             DB::beginTransaction();
