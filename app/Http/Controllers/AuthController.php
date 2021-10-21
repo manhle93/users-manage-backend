@@ -40,7 +40,7 @@ class AuthController extends Controller
             'password' => $data['password']
         ];
         if (!$token = Auth::attempt($credentials)) {
-            return response()->json(['message' => 'Mật khẩu không chính xác'], 401);
+            return response()->json(['message' => '間違ったパスワード'], 401);
         }
         $code = rand(100000,999999);
         $verify = ['token' => $token, 'code' => $code];
@@ -63,7 +63,7 @@ class AuthController extends Controller
             'password' => $data['password']
         ];
         if (!$token = Auth::attempt($credentials)) {
-            return response()->json(['message' => 'Mật khẩu không chính xác'], 401);
+            return response()->json(['message' => '間違ったパスワード'], 401);
         }
         $tokensSaved = [];
         if ($user->tokens != null) {
