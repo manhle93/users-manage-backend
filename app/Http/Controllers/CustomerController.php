@@ -82,6 +82,13 @@ class CustomerController extends Controller
             // $user = User::create($userLogin);
             $user = Auth::user();
             $data['user_id'] = $user->id;
+            $checkPhone = Customer::where([
+                'phone_number'=> $data['phone_number'],
+                'user_id'=> $data['user_id']
+            ])->first();
+            if ($checkPhone) {
+                return response(['message' => '提供された情報が重複しています !'], 401);
+            }
             Customer::create($data);
             if ($comment && $comment['comment']) {
                 Comment::create([
