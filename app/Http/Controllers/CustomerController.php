@@ -307,7 +307,8 @@ class CustomerController extends Controller
                     'representative_name' => $data['representative_name'],
                     'user_id' => $user->id,
                     'address' => $data['address'],
-                    'phone_number' => $data['phone_number']
+                    'phone_number' => $data['phone_number'],
+                    'postal_code' => $data['postal_code']
                 ]);
             }
             DB::commit();
