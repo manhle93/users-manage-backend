@@ -27,13 +27,13 @@ class AuthController extends Controller
         $data = request(['email_username', 'password']);
         $user = User::where('email', $data['email_username'])->orWhere('user_name', $data['email_username'])->first();
         if (!$user) {
-            return response(['message' => 'Email hoặc tên đăng nhập không tồn tại'], 404);
+            return response(['message' => 'この情報は存在しません'], 404);
         }
         if ($user->role_id === 4) {
-            return response(['message' => 'Bạn không có quyền đăng nhập'], 403);
+            return response(['message' => 'ログインする権限がありません'], 403);
         }
         if (!$user->active) {
-            return response(['message' => 'Tài khoản của bạn đã bị đóng'], 403);
+            return response(['message' => 'アカウントがロックされました'], 403);
         }
         $credentials = [
             'email' => $user->email,
