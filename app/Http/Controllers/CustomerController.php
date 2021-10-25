@@ -135,7 +135,7 @@ class CustomerController extends Controller
             'email'
         );
         $comment =  $request->only('comment');
-        // $userLogin = $request->only('user_name', 'email', 'name', 'url_image', 'user_id');
+        $userLogin = $request->only('user_name', 'email', 'name', 'url_image', 'user_id');
         $validator =  Validator::make($data, [
             'id' => 'required',
             'company_name' => 'required',
@@ -168,7 +168,7 @@ class CustomerController extends Controller
             DB::beginTransaction();
             // $userLogin['name'] = $data['company_name'];
             // $userLogin['company_name'] = $data['company_name'];
-            // $user = User::find($userLogin['user_id'])->update(['email' => $userLogin['email'], 'user_name' => $userLogin['user_name']]);
+            $user = User::find($userLogin['user_id'])->update(['email' => $userLogin['email'], 'user_name' => $userLogin['user_name']]);
             Customer::find($data['id'])->update($data);
             if ($comment && $comment['comment']) {
                 Comment::create([
@@ -292,20 +292,19 @@ class CustomerController extends Controller
         try {
             DB::beginTransaction();
             foreach ($customers as $data) {
-                $userLogin['password'] = Hash::make(12345678);
-                $userLogin['role_id'] = 2;
-                $userLogin['name'] = $data['company_name'];
-                $userLogin['company_name'] = $data['company_name'];
-                $userLogin['email'] = $data['manager_email'];
-                $userLogin['user_name'] = $data['manager_email'];
-                $user = User::create($userLogin);
+                // $userLogin['password'] = Hash::make(12345678);
+                // $userLogin['role_id'] = 2;
+                // $userLogin['name'] = $data['company_name'];
+                // $userLogin['company_name'] = $data['company_name'];
+                // $userLogin['email'] = $data['manager_email'];
+                // $userLogin['user_name'] = $data['manager_email'];
+                // $user = User::create($userLogin);
                 Customer::create([
                     'industry_id' => $data['industry_id'],
                     'company_name' => $data['company_name'],
                     'homepage_url' => $data['homepage_url'],
                     'manager_email' => $data['manager_email'],
                     'representative_name' => $data['representative_name'],
-                    'user_id' => $user->id,
                     'address' => $data['address'],
                     'phone_number' => $data['phone_number'],
                     'postal_code' => $data['postal_code']
