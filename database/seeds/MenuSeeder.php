@@ -58,9 +58,9 @@ class MenuSeeder extends Seeder
                     "order" => 3
                 ],
                 [
-                    "parent_id" => 3,
+                    "parent_id" => 7,
                     "name" => "顧客管理",
-                    "icon" => "mdi-account-multiple",
+                    "icon" => "mdi-home-modern",
                     "order" => 1
                 ],
 
