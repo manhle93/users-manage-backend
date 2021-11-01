@@ -18,11 +18,29 @@ class UserSeeder extends Seeder
         $users =
             [
                 [
-                    "name" => "Doãn Trí Bình",
+                    "name" => "Nguyen Tran Lich",
                     "user_name" => "admin",
-                    "email" => "anhd@email.com",
+                    "email" => "lichntbk@gmail.com",
                     "password" => Hash::make(12345678),
                     "role_id" =>  1,
+                    "created_at"=> Carbon::now(),
+                    "updated_at"=> Carbon::now()
+                ],
+                [
+                    "name" => "Tran Van Duc",
+                    "user_name" => "mavuong",
+                    "email" => "mavuong20131073@gmail.com",
+                    "password" => Hash::make(12345678),
+                    "role_id" =>  1,
+                    "created_at"=> Carbon::now(),
+                    "updated_at"=> Carbon::now()
+                ],
+                [
+                    "name" => "Nguyen Thi Thu",
+                    "user_name" => "thuthu",
+                    "email" => "usbusbubs@gmail.com",
+                    "password" => Hash::make(12345678),
+                    "role_id" =>  2,
                     "created_at"=> Carbon::now(),
                     "updated_at"=> Carbon::now()
                 ],
