@@ -31,7 +31,7 @@ class CreateCustomersTable extends Migration
             $table->string('person_in_charge_phone')->nullable();
             $table->dateTime('last_printed_date')->nullable();
             $table->integer('print_count')->default(0)->min(0);
-            $table->integer('user_id');
+            $table->integer('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('industry_id');
             $table->foreign('industry_id')->references('id')->on('lookups')->onDelete('cascade');
