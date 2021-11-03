@@ -17,32 +17,25 @@ class MenuSeeder extends Seeder
             [
                 [
                     "parent_id" => null,
-                    "name" => "Tổng quan",
+                    "name" => "ダッシュボード",
                     "icon" =>  "mdi-grid-large",
                     "order" => 1
                 ],
                 [
                     "parent_id" => null,
-                    "name" => "Người dùng",
+                    "name" => "ユーザー",
                     "icon" => "mdi-account",
                     "order" => 2
                 ],
                 [
-                    "parent_id" => null,
-                    "name" => "UI Elements",
-                    "icon" => "mdi-material-ui",
-                    "order" => 10000
-                ],
-
-                [
                     "parent_id" => 2,
-                    "name" => "Thông tin",
+                    "name" => "プロファイル",
                     "icon" => "mdi-information",
                     "order" => 1
                 ],
                 [
                     "parent_id" => 2,
-                    "name" => "Quản lý người dùng",
+                    "name" => "ユーザー管理",
                     "icon" => "mdi-account-multiple",
                     "order" => 2
                 ],
@@ -54,47 +47,21 @@ class MenuSeeder extends Seeder
                 ],
                 [
                     "parent_id" => 2,
-                    "name" => "Phân quyền",
+                    "name" => "権限",
                     "icon" => "mdi-wrench",
                     "order" => 3
                 ],
-
-
                 [
-                    "parent_id" => 6,
-                    "name" => "Icons",
-                    "icon" => "mdi-movie-roll",
-                    "order" => 1
-                ],
-                [
-                    "parent_id" => 6,
-                    "name" => "Notifications",
-                    "icon" => "mdi-bell",
-                    "order" => 2
-                ],
-                [
-                    "parent_id" => 6,
-                    "name" => "Maps",
-                    "icon" => "mdi-map",
+                    "parent_id" => null,
+                    "name" => "顧客情報",
+                    "icon" => "mdi-account-multiple",
                     "order" => 3
                 ],
                 [
-                    "parent_id" => 6,
-                    "name" => "Charts",
-                    "icon" => "mdi-chart-areaspline",
-                    "order" => 4
-                ],
-                [
-                    "parent_id" => 6,
-                    "name" => "Tables",
-                    "icon" => "mdi-table-edit",
-                    "order" => 5
-                ],
-                [
-                    "parent_id" => 6,
-                    "name" => "Typography",
-                    "icon" => "mdi-format-color-text",
-                    "order" => 6
+                    "parent_id" => 7,
+                    "name" => "顧客管理",
+                    "icon" => "mdi-home-modern",
+                    "order" => 1
                 ],
 
 

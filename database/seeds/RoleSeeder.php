@@ -15,25 +15,15 @@ class RoleSeeder extends Seeder
         $roles = 
         [
             [
-                "name" => "System Admin",
-                "code" => "sysadmin",
-                "description" => "For Developer",
-            ],
-            [
-                "name" => "Admin",
+                "name" => "管理者",
                 "code" => "admin",
-                "description" => "Quản trị viên hệ thống",
+                "description" => "admin",
             ],
             [
-                "name" => "Manager",
-                "code" => "manager",
-                "description" => "Quản lý",
-            ],
-            [
-                "name" => "Employee",
+                "name" => "一般ユーザー",
                 "code" => "employee",
-                "description" => "Nhân viên",
-            ],
+                "description" => "employee",
+            ]
         ];
         foreach($roles as $item){
             DB::table('roles')->insert($item);
