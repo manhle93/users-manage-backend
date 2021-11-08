@@ -15,7 +15,7 @@ class Comment extends Model
     }
     public function getThoiGianAttribute()
     {
-        Carbon::setLocale('vi');
+        Carbon::setLocale('ja');
         return Carbon::parse($this->attributes['created_at'])->setTimezone('Asia/Ho_Chi_Minh')->diffForHumans();
     }
 }

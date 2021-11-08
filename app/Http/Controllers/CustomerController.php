@@ -83,8 +83,8 @@ class CustomerController extends Controller
             $user = Auth::user();
             $data['user_id'] = $user->id;
             $checkPhone = Customer::where([
-                'phone_number'=> $data['phone_number'],
-                'user_id'=> $data['user_id']
+                'phone_number' => $data['phone_number'],
+                'user_id' => $data['user_id']
             ])->first();
             if ($checkPhone) {
                 return response(['message' => '提供された情報が重複しています !'], 401);
@@ -168,15 +168,15 @@ class CustomerController extends Controller
             DB::beginTransaction();
             // $userLogin['name'] = $data['company_name'];
             // $userLogin['company_name'] = $data['company_name'];
-            $user = User::find($userLogin['user_id'])->update(['email' => $userLogin['email'], 'user_name' => $userLogin['user_name']]);
+            // $user = User::find($userLogin['user_id'])->update(['email' => $userLogin['email'], 'user_name' => $userLogin['user_name']]);
             Customer::find($data['id'])->update($data);
-            if ($comment && $comment['comment']) {
-                Comment::create([
-                    'from_user_id' => Auth::user()->id,
-                    'to_user_id' => $user->id,
-                    'content' => $comment['comment']
-                ]);
-            }
+            // if ($comment && $comment['comment']) {
+            //     Comment::create([
+            //         'from_user_id' => Auth::user()->id,
+            //         'to_user_id' => $user->id,
+            //         'content' => $comment['comment']
+            //     ]);
+            // }
             DB::commit();
             return response(['message' => 'Success'], 200);
         } catch (\Exception $e) {
@@ -188,13 +188,15 @@ class CustomerController extends Controller
     public function addComment(Request $request)
     {
         $user_id = $request->get('user_id', null);
+        $customer_id = $request->get('customer_id', null);
         $content = $request->get('content', null);
-        if ($user_id == null || !$content) {
+        if (($user_id == null && $customer_id == null) || !$content) {
             return response(['message' => 'Error'], 404);
         }
         try {
             Comment::create([
                 'from_user_id' => Auth::user()->id,
+                'customer_id' => $customer_id,
                 'to_user_id' => $user_id,
                 'content' => $content
             ]);
@@ -206,11 +208,20 @@ class CustomerController extends Controller
     public function getComment(Request $request)
     {
         $user_id = $request->get('user_id', null);
-        if ($user_id == null) {
+        $customer_id = $request->get('customer_id', null);
+        if ($user_id == null && $customer_id == null) {
             return response(['message' => 'Error'], 404);
         }
         try {
-            return  Comment::with('userComment')->where('to_user_id', $user_id)->orderBy('created_at', "DESC")->get();
+            if($user_id && $customer_id){
+               return Comment::with('userComment')->where('to_user_id', $user_id)->orWhere('customer_id', $customer_id)->orderBy('created_at', "DESC")->get();
+            }
+            else if ($user_id) {
+                return  Comment::with('userComment')->where('to_user_id', $user_id)->orderBy('created_at', "DESC")->get();
+            }
+            else if ($customer_id) {
+                return  Comment::with('userComment')->where('customer_id', $customer_id)->orderBy('created_at', "DESC")->get();
+            }
         } catch (\Exception $e) {
             return $e;
             return response(['message' => 'Không thể comment'], 500);
@@ -273,10 +284,11 @@ class CustomerController extends Controller
         }
     }
 
-    public function countPrint(Request $request){
+    public function countPrint(Request $request)
+    {
         $data = $request->get('countprint', []);
         foreach ($data as $idcustomer) {
-            $customerData = Customer::where('id',$idcustomer)->first();
+            $customerData = Customer::where('id', $idcustomer)->first();
             $countPrint = $customerData->print_count;
             $customerData->update([
                 'print_count' => (int)$countPrint + 1,
@@ -345,6 +357,16 @@ class CustomerController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return response(['message' => 'Error'], 500);
+        }
+    }
+
+    public function deleteComment(Request $request){
+        $comment_id = $request->get('comment_id', null);
+        try{
+            Comment::find($comment_id)->delete();
+            return response(['message' => 'Done'], 200);
+        }catch(\Exception $e){
+            return response(['message' => 'Can not delete this comment'], 500);
         }
     }
 }
